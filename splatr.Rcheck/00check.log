@@ -1,0 +1,177 @@
+* using log directory 'C:/Documents and Settings/Mark Conway/My Documents/My R/splatr.Rcheck'
+* using R version 3.0.1 (2013-05-16)
+* using platform: i386-w64-mingw32 (32-bit)
+* using session charset: ISO8859-1
+* checking for file 'splatr/DESCRIPTION' ... OK
+* checking extension type ... Package
+* this is package 'splatr' version '1.0'
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking whether package 'splatr' can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking for unstated dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+splatr.chrondate: warning in chron(dates = dts): partial argument match
+  of 'dates' to 'dates.'
+splatr.chrontime: warning in chron(times = tms): partial argument match
+  of 'times' to 'times.'
+splatr.getdate: warning in chron(dates = cdate, format = "y-m-d"):
+  partial argument match of 'dates' to 'dates.'
+splatr.analyze: no visible binding for global variable
+  'splatr.lead.variables'
+splatr.balance: no visible global function definition for 'is.slot'
+splatr.balance : <anonymous>: possible error in
+  substitute(positions[i]@x, x = variable): unused argument (x =
+  variable)
+splatr.fparse: no visible binding for global variable
+  'splatr.trading.fractals'
+splatr.fparse: no visible binding for global variable
+  'splatr.trading.abbrevs'
+splatr.fracfac: no visible binding for global variable
+  'splatr.trading.fractals'
+splatr.fracfac: no visible binding for global variable
+  'splatr.trading.factors'
+splatr.genfrac: no visible global function definition for 'rd'
+splatr.getvariable: no visible binding for global variable
+  'splatr.variables'
+splatr.kickout: no visible global function definition for 'is.slot'
+splatr.newanalysis: no visible binding for global variable
+  'splatr.lrmethod'
+splatr.newposition: ... may be used in an incorrect context:
+  new("splatr.position", name = name, subject = subject, gframe =
+  frame, startdate = date, status = "new", pdata = pdata, mdata =
+  mdata, gclass = "position", mclass = "trade", dynamic = TRUE,
+  recursive = FALSE, ...)
+splatr.newvariable: no visible binding for global variable
+  'splatr.variables'
+splatr.newvariable: no visible binding for '<<-' assignment to
+  'splatr.variables'
+splatr.offsettrades: no visible global function definition for
+  'splatr.clearoffsets'
+splatr.pboost: no visible global function definition for
+  'splatr.setframe'
+splatr.pboost: no visible binding for global variable 'gen'
+splatr.pboost: no visible binding for global variable 'maxpos'
+splatr.pboost: no visible binding for global variable 'runs'
+splatr.pboost: no visible global function definition for 'nparse'
+splatr.pboost: possible error in splatr.newstates(pname, sframe,
+  "portfolio", sep = "."): unused argument (sep = ".")
+splatr.portfoliosummary: no visible global function definition for
+  'splatr.run'
+splatr.portfoliosummary: no visible binding for global variable
+  'splatr.summary.states'
+splatr.predict: no visible global function definition for 'nexists'
+splatr.rungame: no visible binding for global variable 'member'
+splatr.runsystem: no visible global function definition for 'Variable'
+splatr.runsystem: no visible binding for global variable 'members'
+splatr.runsystem: no visible binding for global variable 'state'
+splatr.runsystem: no visible global function definition for
+  'splatr.setframe'
+splatr.sboost: no visible global function definition for
+  'splatr.setframe'
+splatr.sboost: no visible binding for global variable
+  'splatr.mergeFrames'
+splatr.sboost: possible error in splatr.analyze(group, aframe,
+  response, variables, method, lag, groupby): unused arguments (method,
+  lag, groupby)
+splatr.showportfolio: no visible global function definition for
+  'splatr.percent'
+splatr.showportfolio: no visible binding for global variable 'status'
+splatr.trade: ... may be used in an incorrect context:
+  new("splatr.trade", name = name, quantity = quantity, price = price,
+  date = date, ...)
+splatr.trade: no visible global function definition for
+  'splatr.plookup'
+splatr.trade: no visible global function definition for
+  'splatr.position'
+splatr.valuateportfolio: no visible global function definition for
+  'splatr.pchange'
+splatr.valuateposition: no visible global function definition for
+  'splatr.pchange'
+splatr.vapply: no visible binding for global variable
+  'splatr.vectorfunctions'
+splatr.vnames : vnames.tree: no visible binding for global variable
+  'splatr.variables'
+week: no visible global function definition for 'weeks'
+* checking for missing documentation entries ... WARNING
+Undocumented code objects:
+  'barhigh' 'barlow' 'barnn' 'day' 'gap' 'hour' 'minute' 'month'
+  'nbarhigh' 'nbarlow' 'net' 'netreturn' 'nexthigher' 'nextlower'
+  'pchange' 'percent' 'quarter' 'rangeindex' 'second' 'sepch' 'sepcl'
+  'sepoc' 'sepoh' 'sepol' 'splatr.addgroup' 'splatr.addportfolio'
+  'splatr.addposition' 'splatr.allocatetrade' 'splatr.analyze'
+  'splatr.balance' 'splatr.chrondate' 'splatr.chrontime'
+  'splatr.clearposoffsets' 'splatr.closeposition' 'splatr.committrade'
+  'splatr.deleteportfolio' 'splatr.deletevariable'
+  'splatr.depositportfolio' 'splatr.dlookup' 'splatr.fixtable'
+  'splatr.fparse' 'splatr.fracfac' 'splatr.gamelab' 'splatr.gapply'
+  'splatr.generateportfolio' 'splatr.genfrac' 'splatr.getclass'
+  'splatr.getdata' 'splatr.getdata.yahoo' 'splatr.getdate'
+  'splatr.getdirectory' 'splatr.getdirectoryname' 'splatr.geterrorrate'
+  'splatr.getframe' 'splatr.getframename' 'splatr.getglobalstates'
+  'splatr.getgroup' 'splatr.getgroupname' 'splatr.getgroupnames'
+  'splatr.getname' 'splatr.getpositions' 'splatr.getsmart'
+  'splatr.getstat' 'splatr.getstate' 'splatr.getstates'
+  'splatr.getvariable' 'splatr.gotdata.yahoo' 'splatr.gselect'
+  'splatr.isfractal' 'splatr.kickout' 'splatr.lookupgroup'
+  'splatr.makefitfn' 'splatr.makepredfn' 'splatr.maketrades'
+  'splatr.mergefractals' 'splatr.mergeframes' 'splatr.newanalysis'
+  'splatr.newdirectory' 'splatr.newfeed' 'splatr.newframe'
+  'splatr.newgame' 'splatr.newgroup' 'splatr.newmethod'
+  'splatr.newportfolio' 'splatr.newposition' 'splatr.newstates'
+  'splatr.newsystem' 'splatr.newvariable' 'splatr.nparse'
+  'splatr.offsettrades' 'splatr.pboost' 'splatr.portfoliosummary'
+  'splatr.predict' 'splatr.removegroup' 'splatr.removeportfolio'
+  'splatr.removeposition' 'splatr.runcv' 'splatr.rungame'
+  'splatr.runmethod' 'splatr.runsystem' 'splatr.runwf' 'splatr.sboost'
+  'splatr.setdirectory' 'splatr.setframename' 'splatr.setgroup'
+  'splatr.setgroupframe' 'splatr.setgroupstates' 'splatr.setstate'
+  'splatr.shift' 'splatr.showportfolio' 'splatr.splitframe'
+  'splatr.stat.pcuts' 'splatr.stat.plabels' 'splatr.stat.pvalue'
+  'splatr.stat.zranges' 'splatr.stat.zvalue' 'splatr.stoploss'
+  'splatr.summarya' 'splatr.trackstates' 'splatr.trade'
+  'splatr.updateportfolio' 'splatr.updatesystemstate'
+  'splatr.validanalysis' 'splatr.validdirectory' 'splatr.validfeed'
+  'splatr.validframe' 'splatr.validgroup' 'splatr.validmethod'
+  'splatr.validportfolio' 'splatr.validposition' 'splatr.validstat'
+  'splatr.validstates' 'splatr.validtrade' 'splatr.valuateportfolio'
+  'splatr.valuateposition' 'splatr.vapply' 'splatr.vlapply'
+  'splatr.vnames' 'splatr.vparse' 'splatr.vrapply' 'splatr.vroll'
+  'splatr.vstep' 'splatr.vunapply' 'splatr.withdrawportfolio'
+  'truehigh' 'truelow' 'truerange' 'week' 'weekday' 'year'
+Undocumented S4 classes:
+  'dates' 'splatr' 'splatr.analysis' 'splatr.directory' 'splatr.feed'
+  'splatr.frame' 'splatr.game' 'splatr.group' 'splatr.method'
+  'splatr.name' 'splatr.portfolio' 'splatr.position' 'splatr.states'
+  'splatr.statistic' 'splatr.system' 'splatr.trade'
+All user-level objects in a package (including S4 classes and methods)
+should have documentation entries.
+See the chapter 'Writing R documentation files' in the 'Writing R
+Extensions' manual.
+* checking examples ... NONE
+* checking PDF version of manual ... WARNING
+LaTeX errors when creating PDF version.
+This typically indicates Rd problems.
+* checking PDF version of manual without hyperrefs or index ... ERROR
+Re-running with no redirection of stdout/stderr.

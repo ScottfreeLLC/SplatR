@@ -1,0 +1,40 @@
+Package: splatr
+Type: Package
+Title: Speculation Platform for R
+Version: 1.0
+Date: 2013-07-01
+Author: Mark Conway
+Maintainer: Mark Conway<Mark.R.Conway@gmail.com>
+Description: Recommender System for Markets and Sports
+License: GPL-2
+Depends: chron, data.table, methods, nnet, plyr, randomForest, rpart
+Collate:
+  'splatr.R'
+  'splatr.global.states.R'
+  'splatr.variables.R'
+  'yahoo.global.states.R'
+  'splatr.space.R'
+  'splatr.utility.R'
+  'splatr.frame.R'
+  'splatr.states.R'
+  'splatr.group.R'
+  'splatr.classes.R'
+  'splatr.statistic.R'
+  'splatr.fractal.R'
+  'splatr.directory.R'
+  'splatr.feed.R'
+  'splatr.feed.yahoo.R'
+  'splatr.method.R'
+  'splatr.name.R'
+  'splatr.variable.R'
+  'splatr.variable.functions.R'
+  'splatr.system.R'
+  'splatr.trade.R'
+  'splatr.analysis.R'
+  'splatr.position.R'
+  'splatr.portfolio.R'
+  'splatr.predict.R'
+  'splatr.game.R'
+  'splatr.pboost.R'
+  'splatr.sboost.R'
+  'splatr.initialize.R'
