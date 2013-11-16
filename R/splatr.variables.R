@@ -3,7 +3,7 @@
 # Package   : splatr
 # Module    : variables
 # Version   : 1.0
-# Copyright : Splatr LLC
+# Copyright : RS Analytics LLC
 # Date      : June 29, 2013
 #
 ##############################################################

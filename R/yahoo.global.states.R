@@ -3,7 +3,7 @@
 # Package   : splatr
 # Module    : yahoo.global.states
 # Version   : 1.0
-# Copyright : Splatr LLC
+# Copyright : RS Analytics LLC
 # Date      : July 4, 2013
 #
 ##############################################################

@@ -1,3 +1,13 @@
+##############################################################
+#
+# Package   : splatr
+# Module    : name
+# Version   : 1.0
+# Copyright : RS Analytics LLC
+# Date      : June 29, 2013
+#
+##############################################################
+
 splatr.getname <- function(object)
 {
 	ifelse(is(object, "character"), object, object$name)

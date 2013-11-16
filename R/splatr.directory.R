@@ -1,3 +1,13 @@
+##############################################################
+#
+# Package   : splatr
+# Module    : directory
+# Version   : 1.0
+# Copyright : RS Analytics LLC
+# Date      : June 29, 2013
+#
+##############################################################
+
 splatr.newdirectory <-
 	function(name = "nasdaq",
 			   subject = "stock",
