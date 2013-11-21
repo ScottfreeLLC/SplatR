@@ -58,29 +58,33 @@ setRefClass("splatr.trade",
 
 setRefClass("splatr.position",
 	fields = list(
-      name = "character",
-	   startdate = "dates",
-	   enddate = "dates",
-	   duration = "times",
-      quantity = "numeric",
-      status = "character",	# "flat", "long", or "short"
+	   name = "character",
+	   status = "character",   # "flat", "long", or "short"
+	   quantity = "numeric",
+	   opendate = "dates",
+	   openprice = "numeric",
+      openvalue = "numeric",
+	   date = "dates",
 	   price = "numeric",
- 		trades = "list",
-		ntrades = "numeric",
-		pname = "character",
-		multiplier = "numeric",
-		value = "numeric",
+	   value = "numeric",
+	   duration = "times",
 		profit = "numeric",
 		costbasis = "numeric",
 		netreturn = "numeric",
+	   phigh = "numeric",
+	   plow = "numeric",
       mae = "numeric",
-      mfe = "numeric"))
+      mfe = "numeric",
+      trades = "list",
+      ntrades = "numeric",
+      pname = "character",
+      multiplier = "numeric"))
 
 setRefClass("splatr.portfolio",
    contains = "splatr.group",
 	fields = list(
 	   startdate = "dates",
-	   enddate = "dates",
+	   date = "dates",
       duration = "times",
 	   npos = "numeric",       # position fields
 	   maxpos = "numeric",

@@ -34,8 +34,8 @@ splatr.football.states <<- list(
 # Portfolio
 
 splatr.portfolio.states <<- list(
+   date = splatr.getdate(),
    npos = 0,
-   margin = 0.0,
    cash = 0.0,
 	value = 0.0,
 	profit = 0.0,
@@ -47,18 +47,21 @@ splatr.portfolio.states <<- list(
 							  
 splatr.position.states <<- list(
 	name = "",
-	quantity = 0,
-	price = 0.0,
-	status = "na",	# "new", "open", "closed"
-	startdate = splatr.getdate(),
-   enddate = splatr.getdate(),
+   status = "flat",	# "long", "short"
+   quantity = 0,
+	opendate = splatr.getdate(),
+   openprice = 0.0,
+   openvalue = 0.0,
+	date = splatr.getdate(),
+   price = 0.0,
 	value = 0.0,
+   duration = 0.0,
 	profit = 0.0,
 	costbasis = 0.0,
 	netreturn = 0.0,
 	mfe = 0.0,
 	mae = 0.0)
-	
+
 # Performance Summary
 
 splatr.summary.states <<- list(

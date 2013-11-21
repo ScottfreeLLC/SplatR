@@ -50,7 +50,7 @@ splatr.object2state <- function(object, frame)
       states <- splatr.getglobalstates("splatr", sclass)
       snames <- names(states)
       for (i in seq(along = snames))
-         states[i] <- object$field(snames[i])
+         states[[i]] <- object$field(snames[i])
       states
    }
 }

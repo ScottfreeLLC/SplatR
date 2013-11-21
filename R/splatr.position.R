@@ -8,70 +8,80 @@
 #
 ##############################################################
 
-splatr.getpositionname <- function(pname, name)
+splatr.getpositionname <-
+   function(pname, name)
 {
    pname <- paste(pname, name, sep=".")
    pname
 }
 
-splatr.setposition <- function(pname, pobject)
+splatr.setposition <-
+   function(pname, pobject)
 {
    assign(pname, pobject, envir = .GlobalEnv)
    pname
 }
 
-splatr.getposition <- function(pname)
+splatr.getposition <-
+   function(pname)
 {
    splatr.getref(pname)
 }
 
 splatr.newposition <-
-	function(portname,
-            name,
-            startdate)
+	function(portname, name, opendate)
 {
    # initialize position fields
-	if (missing(startdate))
-      startdate <- splatr.getdate()
-   enddate <- startdate
-	duration <- enddate - startdate
-	quantity <- 0
 	status <- "flat"
-   price <- 0.0
-   trades <- list()
+	quantity <- 0
+	if (missing(opendate))
+	   opendate <- splatr.getdate()
+   openprice <- 0.0
+   openvalue <- 0.0
+	date <- opendate
+	price <- 0.0
+   value <- 0.0   
+	duration <- date - opendate
+   profit <- 0.0
+   costbasis <- 0.0
+   netreturn <- 0.0
+   mae <- 0.0
+   mfe <- 0.0 
+	trades <- list()
    ntrades <- 0
-   value <- 0
-   profit <- 0
-   costbasis <- 0
-   netreturn <- 0
-	mae <- 0
-	mfe <- 0
    # extract portfolio information
 	portfolio <- splatr.getportfolio(portname)
    subject <- portfolio$subject
    space <- portfolio$space
    pname <- splatr.getframename(name, subject, space)
-   mdata <- splatr.getglobalstates("splatr", "multiplier")
+	pdata <- splatr.getref(pname)
+	mdata <- splatr.getglobalstates("splatr", "multiplier")
    multiplier <- mdata[[subject]]
-   # create position object
+	phigh <- splatr.getstate(pdata, opendate, "high")
+	plow <- splatr.getstate(pdata, opendate, "low")
+	# create position object
 	pnew <- new("splatr.position",
                name = name,
-	            startdate = startdate,
-	            enddate = enddate,
-	            duration = duration,
-	            quantity = quantity,
 	            status = status,
+	            quantity = quantity,
+	            opendate = opendate,
+               openprice = openprice,
+               openvalue = openvalue,
+	            date = date,
 	            price = price,
-	            trades = trades,
-	            ntrades = ntrades,
-	            pname = pname,
-	            multiplier = multiplier,
-	            value = value,
+               value = value,
+	            duration = duration,
 	            profit = profit,
 	            costbasis = costbasis,
 	            netreturn = netreturn,
+               phigh = phigh,
+               plow = plow,
 	            mae = mae,
-	            mfe = mfe)
+	            mfe = mfe,
+	            trades = trades,
+	            ntrades = ntrades,
+	            pname = pname,
+	            multiplier = multiplier)
    if (!is.null(pnew)) {
       posname <- splatr.getpositionname(portname, name)
       splatr.setposition(posname, pnew)
@@ -79,13 +89,20 @@ splatr.newposition <-
    posname
 }
 
-splatr.updateposition <- function(position, trade)
+splatr.updateposition <-
+   function(portfolio, position, trade)
 {
    position$trades <- c(position$trades, trade)
    position$ntrades <- position$ntrades + 1
-   position$enddate <- trade$tdate
-   position$duration <- position$enddate - position$startdate
-   value <- splatr.valuateposition(position, trade$tdate)   
+   position$date <- trade$tdate
+   position$duration <- position$date - position$opendate
+   value <- splatr.valuateposition(position, trade$tdate)
+   if (position$quantity > 0)
+      position$status <- "long"
+   else if (position$quantity < 0)
+      position$status <- "short"
+   else
+      position$status <- "flat"
 }
 
 #
@@ -100,11 +117,31 @@ splatr.updateposition <- function(position, trade)
 #    Position is -200 (net short) @ 17.5
 #
 
-splatr.valuateposition <- function(position, tdate)
+splatr.valuateposition <-
+   function(position, tdate)
 {
+   # get current price
 	pname <- position$pname
    pdata <- splatr.getref(pname)
 	cp <- splatr.getstate(pdata, tdate, "close")
+   # update mfe and mae
+	ch <- splatr.getstate(pdata, tdate, "high")
+   if (high > position$phigh)
+      position$phigh <- ch
+	cl <- splatr.getstate(pdata, tdate, "low")
+   if (low < position$low)
+      position$plow <- cl
+   hchange <- pchange(position$phigh, cp)
+   lchange <- pchange(position$plow, cp)
+	if (position$status == "short") {
+      position$mfe <- lchange
+      position$mae <- hchange
+	}
+   if (position$status == "long") {
+      position$mfe <- hchange
+      position$mae <- lchange
+   }
+	# start valuation
 	multiplier <- position$multiplier
 	netpos <- 0
 	tts <- 0		# total traded shares
@@ -132,4 +169,24 @@ splatr.valuateposition <- function(position, tdate)
 	position$costbasis <- ttv / tts
 	position$netreturn <- percent(totalprofit, cvabs)
 	position$value
+}
+
+splatr.closeposition <-
+   function(portfolio, position, tdate)
+{            
+   # put on an offsetting trade
+   tradesize <- -position$quantity
+   position$date <- tdate
+   pname <- position$pname
+   pdata <- splatr.getref(pname)
+   cp <- splatr.getstate(pdata, tdate, "close")
+   newtrade <- splatr.newtrade(position$name,
+                               tradesize,
+                               cp,
+                               tdate)
+   if (newtrade)
+      splatr.updateportfolio(portfolio,
+                             position,
+                             newtrade,
+                             tradesize)
 }

@@ -30,7 +30,7 @@ splatr.newportfolio <-
             subject = "stock",
             space = splatr.newspace("price", "states", "d1"),
             startdate = splatr.getdate(),
-            enddate = splatr.getdate(),
+            date = splatr.getdate(),
             maxpos = 10,
             posby = "",
             kopos = 0,
@@ -51,7 +51,7 @@ splatr.newportfolio <-
    mstate <- "position"
    members <- as.character(c())
    # initialize portfolio attributes
-   duration <- enddate - startdate
+   duration <- date - startdate
    npos <- 0
    cash <- startcap
    value <- startcap
@@ -80,7 +80,7 @@ splatr.newportfolio <-
                   mstate = mstate,
                   space = space,
                   startdate = startdate,  # portfolio fields
-                  enddate = enddate,
+                  date = date,
                   duration = duration,
                   npos = npos,            # position fields
                   maxpos = maxpos,
@@ -138,149 +138,39 @@ splatr.generateportfolio <-
    pname
 }
 
-splatr.maketrades <-
-   function(pname,
-			   tfname,
-			   bperiod)
+splatr.addportfolio <- function(portfolio, pname)
 {
-   portfolio <- splatr.getportfolio(pname)
-	psvar <- portfolio$posby
-	psflag <- is.null(psvar)
-	bflag <- ifelse(bperiod == 0, FALSE, TRUE)
-	ntrades <- 0
-   tframe <- splatr.getref(tfname)
-	for (i in 1:nrow(tframe))
-	{
-      if (psflag)
-         psize <- tframe[i]$quantity
-		else {
-			pfname <- splatr.getframename(tframe[i]$name, portfolio$subject, portfolio$space)
-         pframe <- splatr.getframe(pfname)
-			cv <- splatr.getstate(pframe, tframe[i]$date, psvar)
-			psize <- (portfolio$value * portfolio$fixedfrac) / cv
-		}
-		splatr.trade(pname,
-						 tframe[i]$name,
-						 psize,
-						 tframe[i]$price,
-						 tframe[i]$date)
-		ntrades <- ntrades + 1
-		if (bflag)
-         if (ntrades %% bperiod == 0)
-            splatr.balance(portfolio, tframe[i]$date)
-	}
+   splatr.addgroup(portfolio, pname)
 }
 
-splatr.trade <-
-	function(portname,
-			   name,
-			   quantity,
-			   price,
-			   tdate)
+splatr.removeportfolio <- function(portfolio, pname)
 {
-	newtrade <- splatr.newtrade(
-					    name = name,
-					    quantity = quantity,
-					    price = price,
-					    tdate = tdate)
-   portfolio <- splatr.getportfolio(portname)
-	pname <- splatr.getpositionname(portname, name)
-   position <- splatr.getposition(pname)
-   newpos <- is.null(position)
-	if (newpos) {
-	   splatr.newposition(portname,
-	                      name,
-	                      tdate)
-	   position <- splatr.getposition(pname)	   
-	}
-	allocation <- splatr.allocatetrade(portfolio,
-                                      position,
-                                      newtrade)
-	if (allocation != 0)
-	{
-		if (newpos) {
-			splatr.addportfolio(portfolio,
-                             pname)
-			portfolio$npos <- portfolio$npos + 1
-		}
-		splatr.committrade(portfolio,
-                         position,
-                         newtrade,
-                         allocation)
-	}
-}
-
-splatr.allocatetrade <-
-	function(portfolio,
-			   position,
-			   trade)
-{
-	cash <- portfolio$cash
-	margin <- portfolio$margin
-	mincash <- portfolio$mincash
-	restricted <- portfolio$restricted
-	if (restricted)
-	{
-		splatr.kickout(portfolio, trade$tdate)
-		splatr.stoploss(portfolio, trade$tdate)
-	}
-	multiplier <- position$multiplier
-	qpold <- position$quantity
-	qtrade <- trade$quantity
-	qpnew <- qpold + qtrade
-	allocation <- abs(qpnew) - abs(qpold)
-	addedvalue <- trade$price * multiplier * abs(allocation)
-	if (restricted)
-	{
-		cashreserve <- mincash * cash
-		freemargin <- (cash - cashreserve) / margin
-		if (addedvalue > freemargin) {
-			cat("Required free margin:", freemargin, "< added value:", addedvalue, "\n")
-			allocation <- 0
-		}
-		else {
-			freecash <- cash - addedvalue
-			if (freecash < 0)
-				portfolio$cash <- cash + freecash
-		}
-	}
-	allocation
-}
-
-splatr.committrade <-
-	function(portfolio,
-			   position,
-			   trade,
-			   allocation)
-{
-   splatr.updateportfolio(portfolio, position, trade, allocation)
-	splatr.setstate(portfolio$gsname, portfolio)
-	splatr.setstate(portfolio$msname, position)
+   splatr.removegroup(portfolio, pname, remove = TRUE)
 }
 
 splatr.updateportfolio <-
-	function(portfolio,
-			   position,
-			   trade,
+   function(portfolio,
+            position,
+            trade,
             allocation)
 {
-   # check for duplicate trade
-   trades <- position$trades
-   texists <- FALSE
-   for (i in seq(along = trades))
-      if (identical(trade, trades[i]))
-         texists <- TRUE
-   # update portfolio and position with new trade
-   if (!texists)
-   {
-      # update position
-      splatr.updateposition(position, trade)
-      # update portfolio
-      multiplier <- position$multiplier
-      cv <- trade$price * multiplier * allocation
-      portfolio$cash <- portfolio$cash - cv
-      value <- splatr.valuateportfolio(portfolio, trade$tdate)
-   }
+   # update position
+   ppq <- abs(position$quantity)
+   splatr.updateposition(portfolio, position, trade)
+   cpq <- abs(position$quantity)
+   npq <- cpq - ppq
+   # update portfolio
+   portfolio$date <- trade$tdate
+   multiplier <- position$multiplier
+   cv <- trade$price * multiplier * npq
+   portfolio$cash <- portfolio$cash - cv
+   value <- splatr.valuateportfolio(portfolio, trade$tdate)
+   # record the portfolio and position states
+   splatr.setstate(portfolio$gsname, portfolio)
+   splatr.setstate(portfolio$msname, position)
+   # if net position is zero, then close the position
+   if (position$quantity == 0)
+      splatr.removeportfolio(portfolio, position$pname)
 }
 
 splatr.balance <-
@@ -393,16 +283,6 @@ splatr.stoploss <- function(portfolio, tdate)
                                                       tdate))
 }
 
-splatr.addportfolio <- function(portfolio, pname)
-{
-	splatr.addgroup(portfolio, pname)
-}
-
-splatr.removeportfolio <- function(portfolio, pname)
-{
-	splatr.removegroup(portfolio, pname, remove = TRUE)
-}
-
 splatr.valuateportfolio <- function(p, tdate)
 {
 	positions <- p$members
@@ -422,35 +302,6 @@ splatr.valuateportfolio <- function(p, tdate)
 	p$profit <- p$value - p$startcap
 	p$netreturn <- pchange(p$value, p$startcap)
 	p$value
-}
-
-splatr.closeposition <-
-	function(portfolio,
-			   position,
-			   tdate)
-{
-	tradesize <- -position$quantity
-	position$enddate <- tdate
-	pname <- position$pname
-	pdata <- splatr.getref(pname)
-	cp <- splatr.getstate(pdata, tdate, "close")
-	newtrade <- splatr.newtrade(
-					    position$name,
-					    tradesize,
-					    cp,
-					    tdate)
-	if (newtrade)
-	{
-		pmsave <- portfolio$pmatch
-		portfolio$pmatch <- FALSE	# force the closing of the position
-		splatr.committrade(
-                  portfolio,
-					   position,
-						newtrade,
-						tradesize,
-						tdate)
-		portfolio$pmatch <- pmsave
-	}
 }
 
 splatr.showportfolio <-

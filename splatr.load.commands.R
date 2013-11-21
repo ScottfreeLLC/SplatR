@@ -3,7 +3,7 @@
 # Package   : splatr
 # Module    : load.commands
 # Version   : 1.0
-# Copyright : Splatr LLC
+# Copyright : RS Analytics LLC
 # Date      : June 29, 2013
 #
 ##############################################################
@@ -26,8 +26,8 @@ splatr.vapply(tech.stock, tech.space, tech.inputs)
 head(aapl.stock.price.states.d1)
 splatr.newanalysis(tech.stock, inputs=tech.inputs, method=splatr.rfmethod, groupby="quarter")
 importance(tech.stock.highsep.analysis.d1$models[[1]])
-# varImpPlot(tech.stock.highsep.analysis.d1$models[[1]])
+varImpPlot(tech.stock.highsep.analysis.d1$models[[1]])
 # splatr.newsystem("closer", longevent = "higherclose", shortevent = "lowerclose")
 # splatr.runsystem(tech.stock, "closer")
-splatr.newsystem("big", longevent = "bigup", shortevent = "bigdown")
-splatr.runsystem(tech.stock, "big")
+# splatr.newsystem("big", longevent = "bigup", shortevent = "bigdown")
+# splatr.runsystem(tech.stock, "big")
