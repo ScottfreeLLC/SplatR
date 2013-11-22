@@ -120,6 +120,34 @@ splatr.newportfolio <-
    pname
 }
 
+splatr.depositportfolio <-
+   function(p,
+            cash,
+            tdate = splatr.getdate())
+   {
+      p$cash <- p$cash + cash
+      splatr.valuateportfolio(p, tdate)
+   }
+
+splatr.withdrawportfolio <-
+   function(p,
+            cash,
+            tdate = splatr.getdate())
+   {
+      currentcash <- p$cash
+      availcash <- currentcash - (p$mincash * p$value)
+      if (cash > availcash)
+      {
+         cat("Withdrawal of", cash, "would exceed reserve amount\n")
+         p$value
+      }
+      else
+      {
+         p$cash <- currentcash - cash
+         splatr.valuateportfolio(p, tdate)
+      }
+   }
+
 splatr.generateportfolio <-
 	function(group,
             tfname,
@@ -165,12 +193,6 @@ splatr.updateportfolio <-
    cv <- trade$price * multiplier * npq
    portfolio$cash <- portfolio$cash - cv
    value <- splatr.valuateportfolio(portfolio, trade$tdate)
-   # record the portfolio and position states
-   splatr.setstate(portfolio$gsname, portfolio)
-   splatr.setstate(portfolio$msname, position)
-   # if net position is zero, then close the position
-   if (position$quantity == 0)
-      splatr.removeportfolio(portfolio, position$pname)
 }
 
 splatr.balance <-
@@ -445,34 +467,6 @@ splatr.portfoliosummary <-
 	pstate$frequency <- pstate$tradingperiod / pstate$totaltrades
 	pstate$longfrequency <- pstate$tradingperiod / pstate$longtrades
 	pstate$shortfrequency <- pstate$tradingperiod / pstate$shorttrades
-}
-
-splatr.depositportfolio <-
-	function(p,
-			   cash,
-			   tdate = splatr.getdate())
-{
-	p$cash <- p$cash + cash
-	splatr.valuateportfolio(p, tdate)
-}
-
-splatr.withdrawportfolio <-
-	function(p,
-			  cash,
-			  tdate = splatr.getdate())
-{
-	currentcash <- p$cash
-	availcash <- currentcash - (p$mincash * p$value)
-	if (cash > availcash)
-	{
-		cat("Withdrawal of", cash, "would exceed reserve amount\n")
-		p$value
-	}
-	else
-	{
-		p$cash <- currentcash - cash
-		splatr.valuateportfolio(p, tdate)
-	}
 }
 
 splatr.deleteportfolio <-

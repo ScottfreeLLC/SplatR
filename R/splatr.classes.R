@@ -52,6 +52,7 @@ setRefClass("splatr.method",
 setRefClass("splatr.trade",
 	fields = list(
       name = "character",
+      order = "character",
       quantity = "numeric",
       price = "numeric",
       tdate = "dates"))

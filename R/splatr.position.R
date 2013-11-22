@@ -84,7 +84,7 @@ splatr.newposition <-
 	            multiplier = multiplier)
    if (!is.null(pnew)) {
       posname <- splatr.getpositionname(portname, name)
-      splatr.setposition(posname, pnew)
+      splatr.setposition(posname, pnew)      
    }
    posname
 }
@@ -126,20 +126,18 @@ splatr.valuateposition <-
 	cp <- splatr.getstate(pdata, tdate, "close")
    # update mfe and mae
 	ch <- splatr.getstate(pdata, tdate, "high")
-   if (high > position$phigh)
+   if (ch > position$phigh)
       position$phigh <- ch
 	cl <- splatr.getstate(pdata, tdate, "low")
-   if (low < position$low)
+   if (cl < position$plow)
       position$plow <- cl
-   hchange <- pchange(position$phigh, cp)
-   lchange <- pchange(position$plow, cp)
 	if (position$status == "short") {
-      position$mfe <- lchange
-      position$mae <- hchange
+      position$mfe <- pchange(position$openprice, position$plow)
+      position$mae <- pchange(position$openprice, position$phigh)
 	}
    if (position$status == "long") {
-      position$mfe <- hchange
-      position$mae <- lchange
+      position$mfe <- pchange(position$phigh, position$openprice)
+      position$mae <- pchange(position$plow, position$openprice)
    }
 	# start valuation
 	multiplier <- position$multiplier
@@ -174,19 +172,22 @@ splatr.valuateposition <-
 splatr.closeposition <-
    function(portfolio, position, tdate)
 {            
-   # put on an offsetting trade
-   tradesize <- -position$quantity
-   position$date <- tdate
-   pname <- position$pname
-   pdata <- splatr.getref(pname)
-   cp <- splatr.getstate(pdata, tdate, "close")
-   newtrade <- splatr.newtrade(position$name,
-                               tradesize,
-                               cp,
-                               tdate)
-   if (newtrade)
-      splatr.updateportfolio(portfolio,
-                             position,
-                             newtrade,
-                             tradesize)
+   # if necessary, put on an offsetting trade
+   pq <- position$quantity
+   if (pq != 0)
+   {
+      tradesize <- -pq
+      position$date <- tdate
+      pdata <- splatr.getref(position$pname)
+      cp <- splatr.getstate(pdata, tdate, "close")
+      newtrade <- splatr.newtrade(position$name,
+                                  tradesize,
+                                  cp,
+                                  tdate)
+      if (newtrade)
+         splatr.updateportfolio(portfolio,
+                                position,
+                                newtrade,
+                                tradesize)      
+   }
 }

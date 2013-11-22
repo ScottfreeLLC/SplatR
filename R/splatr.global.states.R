@@ -46,13 +46,10 @@ splatr.portfolio.states <<- list(
 # Position
 							  
 splatr.position.states <<- list(
-	name = "",
+   date = splatr.getdate(),
+   name = "",
    status = "flat",	# "long", "short"
    quantity = 0,
-	opendate = splatr.getdate(),
-   openprice = 0.0,
-   openvalue = 0.0,
-	date = splatr.getdate(),
    price = 0.0,
 	value = 0.0,
    duration = 0.0,
