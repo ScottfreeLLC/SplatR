@@ -39,8 +39,6 @@ splatr.portfolio.states <<- list(
    cash = 0.0,
 	value = 0.0,
 	profit = 0.0,
-   runup = 0.0,
-   drawdown = 0.0,
    netreturn = 0.0)  # more to add
 	
 # Position

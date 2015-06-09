@@ -375,47 +375,11 @@ splatr.showportfolio <-
 	}
 }
 
-splatr.portfoliosummary <-
-	function(portfolio,
-			   system,
-			   startdate,
-			   enddate,
-			   fractal)
-{
-	if (!missing(system))
-		portfolio <- splatr.runsystem(system, portfolio, fractal)
-	gspace <- splatr.newspace("position", "states", fractal)
-	psf <- splatr.getframe(portfolio, gspace)
-	psf <- psf[psf$date >= startdate & psf$date <= enddate, ]
-	psflength <- nrow(psf)
-	psflong <- psf[psf$quantity > 0, ]
-	psfshort <- psf[psf$quantity < 0, ]
-   psfflat <- psf[psf$quantity == 0, ]
-	psfprofit <- psf[psf$profit > 0, ]
-	psfloss <- psf[psf$profit <= 0, ]
-	pstate <- splatr.summary.states			# calculate performance
-	pstate$totaltrades <- psflength
-	pstate$longtrades <- nrow(psflong)
-	pstate$shorttrades <- nrow(psfshort)
-	pstate$longshortratio <- pstate$longtrades / pstate$shorttrades
-	pstate$winners <- nrow(psfprofit)
-	pstate$losers <- nrow(psfloss)
-	pstate$maxwin <- max(psfprofit$profit)
-	pstate$maxloss <- min(psfloss$profit)
-	pstate$winpct <- pstate$winners / pstate$totaltrades
-	pstate$losepct <- pstate$losers / pstate$totaltrades
-	pstate$grossprofit <- sum(psfprofit$profit)
-	pstate$grossloss <- sum(psfloss$profit)
-	pstate$profitfactor <- pstate$grossprofit / pstate$grossloss
-	totalreturn <- cumprod(1 + psfclosed$netreturn)
-	pstate$totalreturn <- totalreturn[nrow(psfflat)]
 	#pstate$car <-
 	pstate$avgtrade <- mean(psfclosed$netreturn)
 	pstate$avgwin <- mean(psfprofit$netreturn)
 	pstate$avgloss <- mean(psfloss$netreturn)
 	pstate$sdtrade <- sd(psf$netreturn)
-	pstate$avgmfe <- mean(psfclosed$mfe)
-	pstate$avgmae <- mean(psfclosed$mae)
 	pstate$optimalf <- (pstate$winpct * pstate$avgwin + pstate$losepct * pstate$avgloss) / pstate$avgtrade
 	runs <- rle(psfclosed$profit > 0)		# create a run of logical 1's and 0's
 	cumruns <- cumsum(runs[[1]])

@@ -109,7 +109,7 @@ splatr.vnames <- function(vname)
          period <- vlist[["period"]]
          if (period > 0)
             allvars <- c(vxlag, allvars)
-			if (vroot %in% names(splatr.variables))
+        if (vroot %in% names(splatr.variables))
 				allvars <- c(vnames.tree(vroot), vroot, allvars)
 			else
 				allvars <- c(vnames[i], allvars)
